@@ -3,7 +3,12 @@ import re
 from difflib import SequenceMatcher
 from pathlib import Path
 
-from openpyxl import load_workbook
+try:
+	from openpyxl import load_workbook
+except ModuleNotFoundError as error:
+	raise SystemExit(
+		"Missing dependency: openpyxl. Install it with: python -m pip install -r requirements.txt"
+	) from error
 
 
 CSV_FILE = Path(__file__).with_name("MaterialList.csv")
