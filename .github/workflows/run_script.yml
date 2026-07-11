@@ -5,7 +5,7 @@ on:
     # Runs every 5 minutes in UTC.
     - cron: '*/5 * * * *'
   # Keeps the manual Run workflow button available for testing.
-  # workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
   contents: write
