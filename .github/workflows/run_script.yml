@@ -2,13 +2,17 @@ name: Run Similarity Script
 
 on:
   schedule:
-    # This cron syntax means "every 5 minutes"
+    # Runs every 5 minutes in UTC.
     - cron: '*/5 * * * *'
-  # This allows you to manually trigger the script from the Actions tab for testing
+  # Keeps the manual Run workflow button available for testing.
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: material-search-scheduled-run
+  cancel-in-progress: true
 
 jobs:
   run-python:
