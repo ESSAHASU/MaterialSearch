@@ -7,6 +7,9 @@ on:
   # This allows you to manually trigger the script from the Actions tab for testing
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   run-python:
     runs-on: ubuntu-latest
@@ -26,5 +29,23 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Execute Python script
-        # Replace 'main.py' with the actual name of your script file
-      run: python main.py 
+      run: python main.py
+
+    - name: Upload result CSV
+      uses: actions/upload-artifact@v4
+      with:
+        name: material-search-result
+        path: result.csv
+        if-no-files-found: error
+
+    - name: Commit result CSV
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add result.csv
+        if git diff --cached --quiet; then
+          echo "No result.csv changes to commit"
+        else
+          git commit -m "Update material search result"
+          git push
+        fi
